@@ -1,8 +1,20 @@
 from fastapi import FastAPI, Request
+from fastapi.responses import JSONResponse
 from google_oauth import GoogleOAuth
 from utils import error
 
 app = FastAPI()
+
+# -------------------------------------------------------------------
+# 0) Rota obrigatória para o CloudDrive
+#    O addon SEMPRE chama: GET /ip
+# -------------------------------------------------------------------
+@app.get("/ip")
+async def get_ip(request: Request):
+    # Descobre o IP do cliente
+    client_ip = request.client.host
+    return JSONResponse({"ip": client_ip})
+
 
 # -------------------------------------------------------------------
 # 1) Criar URL de login (addon chama isso)
